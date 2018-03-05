@@ -1,0 +1,39 @@
+<html>
+<head>
+<style>
+.go {
+  /*animation-duration: 0.2s;*/
+  /*animation-name: slideout;*/
+	transition: transform 200ms;
+	transform: translate(0px, 920px);
+}
+
+</style>
+<script src="set.js"></script>
+<script src="setgame.js"></script>
+<script>
+function ready(fn) {
+	if (document.readyState != 'loading'){
+		fn();
+	} else if (document.addEventListener) {
+		document.addEventListener('DOMContentLoaded', fn);
+	} else {
+		document.attachEvent('onreadystatechange', function() {
+			if (document.readyState != 'loading')
+				fn();
+		});
+	}
+}
+
+function loaded() {
+	var game = new SetGame("stage");
+}
+
+ready(loaded);
+</script>
+</head>
+<body bgcolor="#006000">
+<div id="stage"></div>
+</body>
+</html>
+
