@@ -354,6 +354,7 @@ var SetGame = function( targetId ){
 		im.style.position = "absolute";
 		im.setAttribute( "width", cardWidth );
 		im.setAttribute( "height", cardHeight );
+		im.setAttribute( "class", "bounceIn" );
 		d.appendChild( im );
 
 		// animate the carddiv
