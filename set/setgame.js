@@ -212,35 +212,25 @@ var SetGame = function( targetId ){
 		}, ( duration / 50 ) );
 	};
 
-	var winkOutSets = function( duration, callback ) { // This is the function for animating SETs leaving the board
-		ignoreInputFlag = true;
-		var start = Date.now();
-		var timer = setInterval( function() {
-			var timePassed = Date.now() - start;
-			if( timePassed >= duration ) {
-				clearInterval( timer );
-				ignoreInputFlag = false;
-				callback();
-				return;
-			}
-			var percent = ( timePassed / duration );
-			forEach( selectedCards, function( item, i) {
+	var removeSet = function( callback ) {
+		forEach( selectedCards, function( item, i ) {
+			var im = document.getElementById( "img" + item );
+			im.classList.add("go");
+		});
+		setTimeout( function() {
+			forEach( selectedCards, function( item, i ) {
 				var im = document.getElementById( "img" + item );
-				im.style.opacity = 1 - percent;
+				im.classList.remove("go");
 			});
-		}, ( duration / 50 ) );
+			callback();
+		}, 400 ); // this must jibe with the timing of the "go" css class style
 	};
 
 	var testSelected = function() {
 		
 		if(isSet(cardsInPlay.cards[selectedCards[0]], cardsInPlay.cards[selectedCards[1]], cardsInPlay.cards[selectedCards[2]])){
 			clearSelection();
-			winkOutSets( 500, function(){
-				forEach( selectedCards, function( item, i ) {
-					document.getElementById( "card" + item ).innerHTML = "";
-				});
-				setWasFound();
-			});
+			removeSet( setWasFound );
 		}
 		else {
 			showError();
