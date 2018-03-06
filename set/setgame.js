@@ -194,24 +194,6 @@ var SetGame = function( targetId ){
 		}
 	};
 
-	var moveCard = function( item, x1, y1, x2, y2, duration, callback ) {
-		ignoreInputFlag = true;
-		var start = Date.now();
-		var timer = setInterval( function() {
-			var timePassed = Date.now() - start;
-			if( timePassed >= duration ) {
-				clearInterval( timer );
-				ignoreInputFlag = false;
-				callback();
-				return;
-			}
-			var percent = ( timePassed / duration )
-			var c = document.getElementById("card"+item);
-			c.style.left = x1 + percent * ( x2 - x1 );
-			c.style["top"] = y1 + percent * ( y2 - y1 );
-		}, ( duration / 50 ) );
-	};
-
 	var removeSet = function( callback ) {
 		forEach( selectedCards, function( item, i ) {
 			var im = document.getElementById( "img" + item );
@@ -223,7 +205,7 @@ var SetGame = function( targetId ){
 				im.classList.remove("go");
 			});
 			callback();
-		}, 400 ); // this must jibe with the timing of the "go" css class style
+		}, 330 ); // this must jibe with the timing of the "go" css class style in index.htm
 	};
 
 	var testSelected = function() {
@@ -375,10 +357,6 @@ var SetGame = function( targetId ){
 		d.appendChild( im );
 
 		// animate the carddiv
-		// animateDiv( cardindex, x1, y1, x2, y2, duration, callback )
-		moveCard( i, -1 * cardWidth, -1 * cardHeight, saveLeft, saveTop, 1000, function(){} );
-		//d.style["top"] = saveTop;
-		//d.style.left = saveLeft;
 	}
 
 	function updateDisplay() {
