@@ -289,7 +289,7 @@ var SetGame = function( targetId ){
 	var checkForGameOver = function() {
 		if( ! cardsInPlay.hasSet() && deck.cardCount() == 0 ) {
 			ignoreInputFlag = true;
-			gameOverDialog();
+			setTimeout( gameOverDialog, 900 );
 		}
 	};
 
@@ -404,7 +404,7 @@ var SetGame = function( targetId ){
 		for( var j = 0; j < 3; j++ ) {
 			var d = document.createElement( "div" );
 			d.id = "card" + (3*i+j);
-			d.onclick = function() {
+			d.onmousedown = function() {
 				cardClick(this.id);
 			};
 			d.style.position = "absolute"; 

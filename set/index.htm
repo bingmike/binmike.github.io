@@ -1,6 +1,7 @@
 <html>
 <head>
 <style>
+
 .go {
   /*animation-duration: 0.2s;*/
   /*animation-name: slideout;*/
@@ -130,6 +131,12 @@ function ready(fn) {
 
 function loaded() {
 	var game = new SetGame("stage");
+}
+
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker
+		.register('./service-worker.js')
+		.then(function() { console.log('Service Worker Registered'); });
 }
 
 ready(loaded);
