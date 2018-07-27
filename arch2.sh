@@ -1,24 +1,25 @@
 #!/bin/bash
 
+################################################################################
+echo Setting the clock
 ln -sf /usr/share/zoneinfo/America/Phoenix /etc/localtime
 hwclock --systohc
-
+################################################################################
+echo Generating locales
 cat > /etc/locale.gen << EOF
 en_US.UTF-8 UTF-8
 EOF
 locale-gen
-
 cat > /etc/locale.conf << EOF
 LANG=en_US.UTF-8
 EOF
-
+################################################################################
+echo Configuring system
 cat > /etc/sudoers << EOF
 root ALL=(ALL) ALL
 mike ALL=(ALL) NOPASSWD: ALL
 EOF
-
 echo "stream14" > /etc/hostname
-
 cat > /etc/hosts << EOF
 127.0.0.1	localhost
 ::1		localhost
@@ -26,18 +27,21 @@ cat > /etc/hosts << EOF
 192.168.1.3	movieroom
 192.168.1.4	dijkstra
 EOF
-
 curl http://mike.dog/tf.ttf -o /usr/share/fonts/Tall\ Film.ttf
-
-echo Set root password
+################################################################################
+echo Setting root\'s password
 passwd
 groupadd mike
 useradd -m -g mike -s /bin/bash mike
-echo Set mike password
+echo Setting mike\'s password
 passwd mike
+################################################################################
+echo Configuring mike\'s account
 cat > /home/mike/.xinitrc << EOF
-feh --bg-scale "/home/mike/images/tiedye4.jpg" &
+xset -dpms
+feh --bg-scale "/home/mike/images/tiedye.jpg" &
 conky &
+unclutter -root -idle 1 &
 /home/mike/scripts/dwmstatus.sh &
 dwm
 EOF
@@ -63,7 +67,7 @@ set nowrap
 syntax on
 EOF
 cat > /home/mike/.profile << EOF
-xset -dpms
+startx
 EOF
 cat > /home/mike/.conkyrc << EOF
 conky.config = {
@@ -89,7 +93,7 @@ conky.config = {
     draw_outline = false,
     draw_borders = false,
     font = 'Tall Films:size=96',
-    default_color = '202020',
+    default_color = 'ffffff',
 };
  
 conky.text = [[ \${time %l}.\${time %M}\${time %P} \${execi 20 /home/mike/scripts/conkyjuice}\${font Tall Films:size=38}
@@ -122,6 +126,14 @@ cd /home/mike/suckless/
 rm -f dwm.tgz dmenu.tgz st.tgz dwm-6.1.mj.patch
 
 mkdir /home/mike/scripts
+cat > /home/mike/scripts/wifi-on.sh << EOF
+#!/bin/bash
+
+sudo wpa_supplicant -dd -B -i wlo1 -D n180211,wext -c /home/mike/.wifi > /dev/null 2>&1
+sudo dhcpcd -4 -L -t 99 wlo1 > /dev/null 2>&1
+EOF
+chmod +x /home/mike/scripts/wifi-on.sh
+
 cat > /home/mike/scripts/dwmstatus.sh << EOF
 #!/bin/bash
 
@@ -157,7 +169,12 @@ chmod +x /home/mike/install-google-chrome.sh
 
 chown -R mike:mike /home/mike
 
+systemctl enable cronie.service
+echo "@reboot	/home/mike/scripts/wifi-on.sh" | crontab
+mv /.wifi /home/mike/.wifi
+
 grub-install --target=i386-pc /dev/mmcblk0
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo Exit the chroot environment and reboot
+rm -f /continue_installation.sh
