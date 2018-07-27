@@ -4,14 +4,12 @@ echo Step one is boot into the Arch live environment, and save an image of the e
 echo Step two is zero out the existing drive.
 echo Step three is to fdisk and mkfs the partitions you want.
 echo
-echo You should have both arch1.sh and arch2.sh here, so wifi-menu is already set up?
-echo
-echo if you did all of these things, you can safely continue.
+echo if you did these things, you can safely continue.
 
 exit
 
-# arch1.sh
-# v0.3
+# arch.sh
+# v0.0.4
 # Mike Jordan
 
 # Installs Arch Linux, dwm, and Google Chrome on a Stream14 Laptop in Southwestern U.S.
@@ -28,8 +26,47 @@ Server = http://mirror.lty.me/archlinux/\$repo/os/\$arch
 Server = http://mirrors.sonic.net/archlinux/\$repo/os/\$arch
 EOF
 
-pacstrap /mnt base \
-              conky \
+pacstrap /mnt conky \
+              bash \
+              bzip2 \
+              coreutils \
+              cryptsetup \
+              device-mapper \
+              dhcpcd \
+              diffutils \
+              e2fsprogs \
+              file \
+              filesystem \
+              findutils \
+              gawk \
+              gcc-libs \
+              gettext \
+              glibc \
+              grep \
+              gzip \
+              inetutils \
+              iproute2 \
+              iputils \
+              less \
+              linux \
+              logrotate \
+              lvm2 \
+              man-db \
+              man-pages \
+              netctl \
+              pacman \
+              pciutils \
+              perl \
+              procps-ng \
+              psmisc \
+              sed \
+              shadow \
+              sysfsutils \
+              systemd-sysvcompat \
+              tar \
+              usbutils \
+              util-linux \
+              which \
 	      dialog \
 	      feh \
 	      gcc \

@@ -37,6 +37,7 @@ echo Set mike password
 passwd mike
 cat > /home/mike/.xinitrc << EOF
 feh --bg-scale "/home/mike/images/tiedye4.jpg" &
+conky &
 /home/mike/scripts/dwmstatus.sh &
 dwm
 EOF
@@ -110,13 +111,15 @@ make && make install
 curl http://dl.suckless.org/tools/dmenu-4.8.tar.gz -o /home/mike/suckless/dmenu.tgz
 cd /home/mike/suckless/
 tar xvzf dmenu.tgz
-cd /home/mike/suckless/demenu-4.8/
+cd /home/mike/suckless/dmenu-4.8/
 make && make install
 curl http://dl.suckless.org/st/st-0.8.1.tar.gz -o /home/mike/suckless/st.tgz
 cd /home/mike/suckless/
 tar xvzf st.tgz
 cd /home/mike/suckless/st-0.8.1/
 make && make install
+cd /home/mike/suckless/
+rm -f dwm.tgz dmenu.tgz st.tgz dwm-6.1.mj.patch
 
 mkdir /home/mike/scripts
 cat > /home/mike/scripts/dwmstatus.sh << EOF
@@ -141,15 +144,18 @@ echo "\${JUICE}"
 EOF
 chmod +x /home/mike/scripts/conkyjuice
 
-chown -R mike:mike /home/mike
+cat > /home/mike/install-google-chrome.sh << EOF
+#!/bin/bash
 
-su mike
-cd /home/mike/
+echo You cannot run this as root and you must sudo at the very end
 git clone https://aur.archlinux.org/google-chrome.git
-cd /home/mike/google-chrome
+cd google-chrome
 makepkg -s
 sudo pacman -U google-chrome-*.pkg.tar.xz
+EOF
+chmod +x /home/mike/install-google-chrome.sh
 
+chown -R mike:mike /home/mike
 
 grub-install --target=i386-pc /dev/mmcblk0
 grub-mkconfig -o /boot/grub/grub.cfg
