@@ -1,9 +1,5 @@
 #!/bin/bash
 
-echo Step one is to understand that this script overwrites system files
-echo Uh-oh, we are already goimg.
-
-# Typos in a previous version of this line resulted in a jacked up clock
 ln -sf /usr/share/zoneinfo/America/Phoenix /etc/localtime
 hwclock --systohc
 
@@ -30,6 +26,8 @@ cat > /etc/hosts << EOF
 192.168.1.3	movieroom
 192.168.1.4	dijkstra
 EOF
+
+curl http://mike.dog/tf.ttf -o /usr/share/fonts/Tall\ Film.ttf
 
 echo Set root password
 passwd
@@ -104,15 +102,18 @@ curl http://mike.dog/tiedye4.jpg -o /home/mike/images/tiedye4.jpg
 mkdir /home/mike/suckless
 curl http://dl.suckless.org/dwm/dwm-6.1.tar.gz -o /home/mike/suckless/dwm.tgz
 curl http://mike.dog/dwm-6.1.mj.patch -o /home/mike/suckless/dwm-6.1.mj.patch
+cd /home/mike/suckless/
 tar xvzf dwm.tgz
 patch -s -p0 < dwm-6.1.mj.patch
 cd /home/mike/suckless/dwm-6.1/
 make && make install
 curl http://dl.suckless.org/tools/dmenu-4.8.tar.gz -o /home/mike/suckless/dmenu.tgz
+cd /home/mike/suckless/
 tar xvzf dmenu.tgz
 cd /home/mike/suckless/demenu-4.8/
 make && make install
 curl http://dl.suckless.org/st/st-0.8.1.tar.gz -o /home/mike/suckless/st.tgz
+cd /home/mike/suckless/
 tar xvzf st.tgz
 cd /home/mike/suckless/st-0.8.1/
 make && make install
@@ -130,8 +131,25 @@ do
 	sleep 10
 done
 EOF
+chmod +x /home/mike/scripts/dwmstatus.sh
+
+cat > /home/mike/scripts/conkyjuice << EOF
+#!/bin/bash
+
+JUICE=\$(upower -i \$(upower -e | grep BAT)|grep perc|sed -e"s/ //g"|cut -d":" -f2)
+echo "\${JUICE}"
+EOF
+chmod +x /home/mike/scripts/conkyjuice
 
 chown -R mike:mike /home/mike
+
+su mike
+cd /home/mike/
+git clone https://aur.archlinux.org/google-chrome.git
+cd /home/mike/google-chrome
+makepkg -s
+sudo pacman -U google-chrome-*.pkg.tar.xz
+
 
 grub-install --target=i386-pc /dev/mmcblk0
 grub-mkconfig -o /boot/grub/grub.cfg

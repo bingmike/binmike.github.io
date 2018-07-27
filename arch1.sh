@@ -10,6 +10,12 @@ echo if you did all of these things, you can safely continue.
 
 exit
 
+# arch1.sh
+# v0.3
+# Mike Jordan
+
+# Installs Arch Linux, dwm, and Google Chrome on a Stream14 Laptop in Southwestern U.S.
+
 timedatectl set-ntp true
 
 mount /dev/mmcblk0p1 /mnt || exit
@@ -23,6 +29,7 @@ Server = http://mirrors.sonic.net/archlinux/\$repo/os/\$arch
 EOF
 
 pacstrap /mnt base \
+              conky \
 	      dialog \
 	      feh \
 	      gcc \
@@ -30,6 +37,7 @@ pacstrap /mnt base \
 	      grub \
 	      fakeroot \
 	      make \
+              patch \
 	      pkgconf \
 	      sshfs \
 	      sudo \
@@ -37,14 +45,13 @@ pacstrap /mnt base \
 	      wpa_supplicant \
 	      ttf-liberation \
 	      upower \
-	      xorg \
-	      xorg-apps \
 	      xorg-server \
 	      xorg-xinit || exit
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-echo Run ./arch2.sh now from the chroot environment.
-mv arch2.sh /mnt
+curl http://mike.dog/arch2.sh -o /mnt/continue_installation.sh
+echo Run ./continue_installation.sh now from the chroot environment.
+
 arch-chroot /mnt
 
