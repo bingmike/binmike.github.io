@@ -196,7 +196,7 @@ cat > /root/wfo.sh << EOF
 sleep 3
 /home/mike/scripts/wifi-on.sh
 EOF
-chmod +x /toot/wfo.sh
+chmod +x /root/wfo.sh
 
 systemctl enable cronie.service
 echo "@reboot	/root/wfo.sh" | crontab
@@ -207,6 +207,15 @@ grub-mkconfig -o /boot/grub/grub.cfg
 sed -i 's/quiet/quiet loglevel=3 vga=792/g' /boot/grub/grub.cfg
 sed -i 's/linux\t/linux16\t/g' /boot/grub/grub.cfg
 sed -i 's/initrd\t/initrd16\t/g' /boot/grub/grub.cfg
+
+###############################################################################
+# Install Google Chrome
+echo Installing Chrome
+cd /home/mike/
+su mike -c "git clone https://aur.archlinux.org/google-chrome.git"
+cd /home/mike/google-chrome/
+su mike -c "makepkg -s"
+pacman -U google-chrome-*.pkg.tar.xz
 
 echo Exit the chroot environment and reboot
 rm -f /continue_installation.sh

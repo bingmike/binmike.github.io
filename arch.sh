@@ -9,7 +9,7 @@ echo if you did these things, you can safely continue.
 exit
 
 # arch.sh
-# v0.0.6
+# v0.0.7
 # Mike Jordan
 
 # Installs Arch Linux and dwm on a Stream14 Laptop in Southwestern U.S.
@@ -98,6 +98,7 @@ wayland-protocols gtk3 libcups libxss nss \
 	      ttf-liberation \
 	      upower \
               unclutter \
+              xorg-xset \
               xorg-xsetroot \
 	      xorg-server \
 	      xorg-xinit || exit
