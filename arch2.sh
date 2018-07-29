@@ -185,6 +185,8 @@ chown -R mike:mike /home/mike
 systemctl enable cronie.service
 echo "@reboot	sleep 3 && /home/mike/scripts/wifi-on.sh" | crontab
 mv /.wifi /home/mike/.wifi
+chown mike:mike /home/mike/.wifi
+chmod 664 /home/mike/.wifi
 
 grub-install --target=i386-pc /dev/mmcblk0
 grub-mkconfig -o /boot/grub/grub.cfg
