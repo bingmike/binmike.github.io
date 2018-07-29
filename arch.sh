@@ -1,25 +1,30 @@
 #!/bin/bash
 
-echo Step one is boot into the Arch live environment, and save an image of the existing drive to a USB device.
-echo Step two is zero out the existing drive.
-echo Step three is to fdisk and mkfs the partitions you want.
-echo
-echo if you did these things, you can safely continue.
-
-exit
-
 # arch.sh
-# v0.0.8
+# v0.0.9
 # Mike Jordan
 
 # Installs Arch Linux and dwm on a Stream14 Laptop in Southwestern U.S.
-# For a user account named mike. The stream should have a single linux
-# partition on it's drive named mmcblk0p1. This is a very narrow use case. 
+# For a user account named mike. With my personal suckless patches.
+# This is a very narrow use case. 
 
+# Zero out the hard drive to make that first image Just Exactly Perfect
+dd if=/dev/zero of=/dev/mmcblk0 bs=4194304 status=progress
+
+# Create our one true partition and format
+# (Stream14 has a single internal nonreplacable 32GB sd card)
+echo -e "n\n\n\n\n\nw" | fdisk /dev/mmcblk0
+mkfs.ext4 /dev/mmcblk0p1
+
+# If your clock is not right at the begining of an Arch install,
+# your computer will explode
 timedatectl set-ntp true
 
+# In a more complex setup, different mountpoints are set here
+# TODO Consider a swapfile. This install is only 2.6GB. 2GB for swap.
 mount /dev/mmcblk0p1 /mnt || exit
 
+# This is my short mirrorlist. These guys all ping in the 30s
 cat > /etc/pacman.d/mirrorlist << EOF
 Server = http://mirrors.kernel.org/archlinux/\$repo/os/\$arch
 Server = http://mirrors.ocf.berkeley.edu/archlinux/\$repo/os/\$arch
@@ -28,7 +33,9 @@ Server = http://mirror.lty.me/archlinux/\$repo/os/\$arch
 Server = http://mirrors.sonic.net/archlinux/\$repo/os/\$arch
 EOF
 
-# Chrome dependencies follwed by base packages (edited) followed by my needs
+# The paragraph of packages is all of the Chrome dependencies.
+# That's followed by "base" packages (edited for shit like nano)
+# followed by my needs. fakeroot and pkgconf might be misplaced
 
 pacstrap /mnt \
 adwaita-icon-theme at-spi2-atk at-spi2-core atk avahi \
@@ -106,9 +113,12 @@ wayland-protocols gtk3 libcups libxss nss \
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
+# We want wifi, ideally without posting passwords online
+# Here's my solution for wifi at first boot.
 cp /run/netctl/wpa_supplicant-wlo1.conf /mnt/.wifi
 
 curl http://mike.dog/arch2.sh -o /mnt/continue_installation.sh
+chmod +x /mnt/continue_installation.sh
 echo Run ./continue_installation.sh now from the chroot environment.
 
 arch-chroot /mnt
