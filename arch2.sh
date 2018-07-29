@@ -180,20 +180,10 @@ echo "\${JUICE}"
 EOF
 chmod +x /home/mike/scripts/conkyjuice
 
-cat > /home/mike/install-google-chrome.sh << EOF
-#!/bin/bash
-
-git clone https://aur.archlinux.org/google-chrome.git
-cd google-chrome
-makepkg -s
-sudo pacman -U --noconfirm google-chrome-*.pkg.tar.xz
-EOF
-chmod +x /home/mike/install-google-chrome.sh
-
 chown -R mike:mike /home/mike
 
 systemctl enable cronie.service
-echo "@reboot	/home/mike/scripts/wifi-on.sh" | crontab
+echo "@reboot	sleep 3 && /home/mike/scripts/wifi-on.sh" | crontab
 mv /.wifi /home/mike/.wifi
 
 grub-install --target=i386-pc /dev/mmcblk0
@@ -209,7 +199,9 @@ cd /home/mike/
 su mike -c "git clone https://aur.archlinux.org/google-chrome.git"
 cd /home/mike/google-chrome/
 su mike -c "makepkg -s"
-pacman -U google-chrome-*.pkg.tar.xz
+pacman --noconfirm -U google-chrome-*.pkg.tar.xz
+cd /root/
+rm -rf /home/mike/google-chrome/
 
 echo Exit the chroot environment and reboot
 rm -f /continue_installation.sh
