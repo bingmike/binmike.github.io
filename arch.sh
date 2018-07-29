@@ -9,7 +9,7 @@ echo if you did these things, you can safely continue.
 exit
 
 # arch.sh
-# v0.0.5
+# v0.0.6
 # Mike Jordan
 
 # Installs Arch Linux and dwm on a Stream14 Laptop in Southwestern U.S.
