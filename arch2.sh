@@ -192,14 +192,8 @@ chmod +x /home/mike/install-google-chrome.sh
 
 chown -R mike:mike /home/mike
 
-cat > /root/wfo.sh << EOF
-sleep 3
-/home/mike/scripts/wifi-on.sh
-EOF
-chmod +x /root/wfo.sh
-
 systemctl enable cronie.service
-echo "@reboot	/root/wfo.sh" | crontab
+echo "@reboot	/home/mike/scripts/wifi-on.sh" | crontab
 mv /.wifi /home/mike/.wifi
 
 grub-install --target=i386-pc /dev/mmcblk0
