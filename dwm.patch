@@ -1,6 +1,6 @@
 diff -ruN dwm-6.1/config.def.h dwm-6.1-mj/config.def.h
 --- dwm-6.1/config.def.h	2015-11-08 15:39:37.000000000 -0700
-+++ dwm-6.1-mj/config.def.h	2018-07-28 16:36:30.334818461 -0700
++++ dwm-6.1-mj/config.def.h	2018-07-29 10:58:15.730089956 -0700
 @@ -2,18 +2,18 @@
  
  /* appearance */
@@ -35,7 +35,7 @@ diff -ruN dwm-6.1/config.def.h dwm-6.1-mj/config.def.h
  	{ "[M]",      monocle },
  };
  
-@@ -50,16 +50,18 @@
+@@ -50,17 +50,22 @@
  	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
  
  /* helper for spawning shell commands in the pre dwm-5.0 fashion */
@@ -48,15 +48,19 @@ diff -ruN dwm-6.1/config.def.h dwm-6.1-mj/config.def.h
 -static const char *termcmd[]  = { "st", NULL };
 +static const char *termcmd[]  = { "st", "-g", "96x36+40+40" };
 +static const char *chromecmd[]  = { "/usr/bin/google-chrome-stable", NULL };
++static const char *screenshotcmd[]  = { "scrot", "/home/mike/images/screenshots/%Y%m%d%H%M%S.png", NULL };
  
  static Key keys[] = {
  	/* modifier                     key        function        argument */
  	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 +	{ MODKEY,                       XK_c,      spawn,          {.v = chromecmd } },
  	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
++	{ Mod4Mask,	                XK_Return, spawn,          {.v = termcmd } },
++	{ Mod4Mask,	                XK_s,      spawn,          {.v = screenshotcmd } },
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-@@ -70,9 +72,9 @@
+ 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+@@ -70,9 +75,9 @@
  	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
@@ -71,7 +75,7 @@ diff -ruN dwm-6.1/config.def.h dwm-6.1-mj/config.def.h
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 diff -ruN dwm-6.1/config.mk dwm-6.1-mj/config.mk
 --- dwm-6.1/config.mk	2015-11-08 15:39:37.000000000 -0700
-+++ dwm-6.1-mj/config.mk	2018-07-27 16:27:51.757133536 -0700
++++ dwm-6.1-mj/config.mk	2018-07-28 23:53:11.060765932 -0700
 @@ -17,8 +17,6 @@
  # freetype
  FREETYPELIBS = -lfontconfig -lXft

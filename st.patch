@@ -1,6 +1,6 @@
 diff -ruN st-0.8.1/config.def.h st-0.8.1-mj/config.def.h
 --- st-0.8.1/config.def.h	2018-03-20 13:29:59.000000000 -0700
-+++ st-0.8.1-mj/config.def.h	2018-07-27 17:33:01.064512367 -0700
++++ st-0.8.1-mj/config.def.h	2018-07-29 10:35:18.120038219 -0700
 @@ -5,7 +5,7 @@
   *
   * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
@@ -10,3 +10,20 @@ diff -ruN st-0.8.1/config.def.h st-0.8.1-mj/config.def.h
  static int borderpx = 2;
  
  /*
+@@ -109,6 +109,7 @@
+ 	/* more colors can be added after 255 to use with DefaultXX */
+ 	"#cccccc",
+ 	"#555555",
++	"#300040",
+ };
+ 
+ 
+@@ -117,7 +118,7 @@
+  * foreground, background, cursor, reverse cursor
+  */
+ unsigned int defaultfg = 7;
+-unsigned int defaultbg = 0;
++unsigned int defaultbg = 258;
+ static unsigned int defaultcs = 256;
+ static unsigned int defaultrcs = 257;
+ 

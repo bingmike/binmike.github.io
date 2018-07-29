@@ -9,7 +9,7 @@ echo if you did these things, you can safely continue.
 exit
 
 # arch.sh
-# v0.0.7
+# v0.0.8
 # Mike Jordan
 
 # Installs Arch Linux and dwm on a Stream14 Laptop in Southwestern U.S.
@@ -91,6 +91,7 @@ wayland-protocols gtk3 libcups libxss nss \
 	      make \
               patch \
 	      pkgconf \
+              scrot \
 	      sshfs \
 	      sudo \
 	      vim \
