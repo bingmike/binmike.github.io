@@ -1,6 +1,6 @@
 diff -ruN dwm-6.1/config.def.h dwm-6.1-mj/config.def.h
 --- dwm-6.1/config.def.h	2015-11-08 15:39:37.000000000 -0700
-+++ dwm-6.1-mj/config.def.h	2018-07-29 10:58:15.730089956 -0700
++++ dwm-6.1-mj/config.def.h	2018-07-29 13:19:57.880782076 -0700
 @@ -2,18 +2,18 @@
  
  /* appearance */
@@ -11,11 +11,13 @@ diff -ruN dwm-6.1/config.def.h dwm-6.1-mj/config.def.h
 -static const char dmenufont[]       = "monospace:size=10";
 +static const char dmenufont[]       = "Liberation Sans:size=9";
  static const char normbordercolor[] = "#444444";
- static const char normbgcolor[]     = "#222222";
+-static const char normbgcolor[]     = "#222222";
++static const char normbgcolor[]     = "#000020";
  static const char normfgcolor[]     = "#bbbbbb";
 -static const char selbordercolor[]  = "#005577";
+-static const char selbgcolor[]      = "#005577";
 +static const char selbordercolor[]  = "#202020";
- static const char selbgcolor[]      = "#005577";
++static const char selbgcolor[]      = "#300040";
  static const char selfgcolor[]      = "#eeeeee";
  static const unsigned int borderpx  = 1;        /* border pixel of windows */
 -static const unsigned int snap      = 32;       /* snap pixel */
@@ -30,8 +32,9 @@ diff -ruN dwm-6.1/config.def.h dwm-6.1-mj/config.def.h
  static const Layout layouts[] = {
  	/* symbol     arrange function */
 -	{ "[]=",      tile },    /* first entry is default */
- 	{ "><>",      NULL },    /* no layout function means floating behavior */
-+	{ "[]=",      tile },    /* first entry is default */
+-	{ "><>",      NULL },    /* no layout function means floating behavior */
++	{ "[F]",      NULL },    /* no layout function means floating behavior */
++	{ "[T]",      tile },    /* first entry is default */
  	{ "[M]",      monocle },
  };
  
@@ -75,7 +78,7 @@ diff -ruN dwm-6.1/config.def.h dwm-6.1-mj/config.def.h
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 diff -ruN dwm-6.1/config.mk dwm-6.1-mj/config.mk
 --- dwm-6.1/config.mk	2015-11-08 15:39:37.000000000 -0700
-+++ dwm-6.1-mj/config.mk	2018-07-28 23:53:11.060765932 -0700
++++ dwm-6.1-mj/config.mk	2018-07-29 13:04:40.009643210 -0700
 @@ -17,8 +17,6 @@
  # freetype
  FREETYPELIBS = -lfontconfig -lXft

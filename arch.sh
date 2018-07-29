@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # arch.sh
-# v0.0.9
+# v0.0.10
 # Mike Jordan
 
 # Installs Arch Linux and dwm on a Stream14 Laptop in Southwestern U.S.
@@ -9,12 +9,16 @@
 # This is a very narrow use case. 
 
 # Zero out the hard drive to make that first image Just Exactly Perfect
+echo "Zeroing out the hard drive... 7 minutes."
 dd if=/dev/zero of=/dev/mmcblk0 bs=4194304 status=progress
 
 # Create our one true partition and format
 # (Stream14 has a single internal nonreplacable 32GB sd card)
+echo "Generating partition"
 echo -e "n\n\n\n\n\nw" | fdisk /dev/mmcblk0
 mkfs.ext4 /dev/mmcblk0p1
+
+echo "Installing Arch..."
 
 # If your clock is not right at the begining of an Arch install,
 # your computer will explode

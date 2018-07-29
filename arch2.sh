@@ -50,8 +50,7 @@ alias ls='ls --color=auto'
 alias ll='ls -l'
 alias rm='rm -i'
 alias mv='mv -i'
-alias x='startx > /dev/null 2>&1'
-export PS1="\\033[01;32m\\u@\\h\\033[00m \\033[01;34m\\w\\033[00m\\\\$ "
+export PS1="\\033[01;32m\\u@\\h \\033[01;34m\\w\\033[00m\\\\$ "
 export EDITOR=vim
 EOF
 cat > /root/.bashrc << EOF
@@ -59,7 +58,7 @@ alias ls='ls --color=auto'
 alias ll='ls -l'
 alias rm='rm -i'
 alias mv='mv -i'
-export PS1="\\033[01;91m\\u@\\h\\033[00m \\033[01;34m\\w\\033[00m\\\\$ "
+export PS1="\\033[01;91m\\u@\\h \\033[01;34m\\w\\033[00m\\\\$ "
 export EDITOR=vim
 EOF
 cat > /home/mike/.vimrc << EOF
@@ -110,7 +109,7 @@ conky.config = {
     override_utf8_locale = true,
     alignment = 'top_right',
     gap_x = 0,
-    gap_y = 0,
+    gap_y = 10,
     draw_shades = false,
     draw_outline = false,
     draw_borders = false,
@@ -195,7 +194,7 @@ sed -i 's/initrd\t/initrd16\t/g' /boot/grub/grub.cfg
 
 ###############################################################################
 # Install Google Chrome
-echo Installing Chrome
+echo Installing Chrome... this takes about 5 minutes...
 cd /home/mike/
 su mike -c "git clone https://aur.archlinux.org/google-chrome.git"
 cd /home/mike/google-chrome/
