@@ -101,6 +101,7 @@ wayland-protocols gtk3 libcups libxss nss \
 	      grub \
 	      fakeroot \
 	      make \
+              mplayer \
               patch \
 	      pkgconf \
               scrot \
