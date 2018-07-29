@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # arch.sh
-# v0.0.10
+# v0.0.11
 # Mike Jordan
 
 # Installs Arch Linux and dwm on a Stream14 Laptop in Southwestern U.S.
@@ -9,7 +9,7 @@
 # This is a very narrow use case. 
 
 # Zero out the hard drive to make that first image Just Exactly Perfect
-echo "Zeroing out the hard drive... 7 minutes."
+echo "Zeroing out the hard drive... 6½ minutes."
 dd if=/dev/zero of=/dev/mmcblk0 bs=4194304 status=progress
 
 # Create our one true partition and format
@@ -92,6 +92,7 @@ wayland-protocols gtk3 libcups libxss nss \
               usbutils \
               util-linux \
               which \
+              alsa-utils \
               conky \
 	      dialog \
 	      feh \
@@ -123,7 +124,7 @@ cp /run/netctl/wpa_supplicant-wlo1.conf /mnt/.wifi
 
 curl http://mike.dog/arch2.sh -o /mnt/continue_installation.sh
 chmod +x /mnt/continue_installation.sh
-echo Run ./continue_installation.sh now from the chroot environment.
 
-arch-chroot /mnt
+arch-chroot /mnt ./continue_installation.sh
 
+reboot
