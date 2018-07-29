@@ -5,7 +5,6 @@ echo Setting the clock
 ln -sf /usr/share/zoneinfo/America/Phoenix /etc/localtime
 hwclock --systohc
 ################################################################################
-echo Generating locales
 cat > /etc/locale.gen << EOF
 en_US.UTF-8 UTF-8
 EOF
@@ -39,6 +38,7 @@ passwd mike
 echo Configuring mike\'s account
 cat > /home/mike/.xinitrc << EOF
 xset -dpms
+setxkbmap -option ctrl:nocaps
 feh --bg-scale "/home/mike/images/tiedye.jpg" &
 conky &
 unclutter -root -idle 1 &
@@ -51,8 +51,15 @@ alias ll='ls -l'
 alias rm='rm -i'
 alias mv='mv -i'
 alias x='startx > /dev/null 2>&1'
-setxkbmap -option ctrl:nocaps
 export PS1="\\033[01;32m\\u@\\h\\033[00m \\033[01;34m\\w\\033[00m\\\\$ "
+export EDITOR=vim
+EOF
+cat > /root/.bashrc << EOF
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias rm='rm -i'
+alias mv='mv -i'
+export PS1="\\033[01;91m\\u@\\h\\033[00m \\033[01;34m\\w\\033[00m\\\\$ "
 export EDITOR=vim
 EOF
 cat > /home/mike/.vimrc << EOF
@@ -66,8 +73,23 @@ set hlsearch
 set nowrap
 syntax on
 EOF
-cat > /home/mike/.profile << EOF
-startx
+cat > /root/.vimrc << EOF
+set number
+colorscheme default
+set cursorline
+set lazyredraw
+set noshowmatch
+set incsearch
+set hlsearch
+set nowrap
+syntax on
+EOF
+cat > /home/mike/.bash_profile << EOF
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+
+if [[ ! \$DISPLAY && \$XDG_VTNR -eq 1 ]]; then
+	exec startx > /dev/null 2>&1
+fi
 EOF
 cat > /home/mike/.conkyrc << EOF
 conky.config = {
@@ -102,14 +124,14 @@ conky.text = [[ \${time %l}.\${time %M}\${time %P} \${execi 20 /home/mike/script
 EOF
 
 mkdir /home/mike/images
-curl http://mike.dog/tiedye4.jpg -o /home/mike/images/tiedye4.jpg
+curl http://mike.dog/tiedye.jpg -o /home/mike/images/tiedye.jpg
 
 mkdir /home/mike/suckless
 curl http://dl.suckless.org/dwm/dwm-6.1.tar.gz -o /home/mike/suckless/dwm.tgz
-curl http://mike.dog/dwm-6.1.mj.patch -o /home/mike/suckless/dwm-6.1.mj.patch
+curl http://mike.dog/dwm.patch -o /home/mike/suckless/dwm.patch
 cd /home/mike/suckless/
 tar xvzf dwm.tgz
-patch -s -p0 < dwm-6.1.mj.patch
+patch -s -p0 < dwm.patch
 cd /home/mike/suckless/dwm-6.1/
 make && make install
 curl http://dl.suckless.org/tools/dmenu-4.8.tar.gz -o /home/mike/suckless/dmenu.tgz
@@ -118,12 +140,14 @@ tar xvzf dmenu.tgz
 cd /home/mike/suckless/dmenu-4.8/
 make && make install
 curl http://dl.suckless.org/st/st-0.8.1.tar.gz -o /home/mike/suckless/st.tgz
+curl http://mike.dog/st.patch -o /home/mike/suckless/st.patch
 cd /home/mike/suckless/
 tar xvzf st.tgz
 cd /home/mike/suckless/st-0.8.1/
+patch -p1 < ../st.patch
 make && make install
 cd /home/mike/suckless/
-rm -f dwm.tgz dmenu.tgz st.tgz dwm-6.1.mj.patch
+rm -f dwm.tgz dmenu.tgz st.tgz dwm.patch st.patch
 
 mkdir /home/mike/scripts
 cat > /home/mike/scripts/wifi-on.sh << EOF
@@ -159,22 +183,30 @@ chmod +x /home/mike/scripts/conkyjuice
 cat > /home/mike/install-google-chrome.sh << EOF
 #!/bin/bash
 
-echo You cannot run this as root and you must sudo at the very end
 git clone https://aur.archlinux.org/google-chrome.git
 cd google-chrome
 makepkg -s
-sudo pacman -U google-chrome-*.pkg.tar.xz
+sudo pacman -U --noconfirm google-chrome-*.pkg.tar.xz
 EOF
 chmod +x /home/mike/install-google-chrome.sh
 
 chown -R mike:mike /home/mike
 
+cat > /root/wfo.sh << EOF
+sleep 3
+/home/mike/scripts/wifi-on.sh
+EOF
+chmod +x /toot/wfo.sh
+
 systemctl enable cronie.service
-echo "@reboot	/home/mike/scripts/wifi-on.sh" | crontab
+echo "@reboot	/root/wfo.sh" | crontab
 mv /.wifi /home/mike/.wifi
 
 grub-install --target=i386-pc /dev/mmcblk0
 grub-mkconfig -o /boot/grub/grub.cfg
+sed -i 's/quiet/quiet loglevel=3 vga=792/g' /boot/grub/grub.cfg
+sed -i 's/linux\t/linux16\t/g' /boot/grub/grub.cfg
+sed -i 's/initrd\t/initrd16\t/g' /boot/grub/grub.cfg
 
 echo Exit the chroot environment and reboot
 rm -f /continue_installation.sh
