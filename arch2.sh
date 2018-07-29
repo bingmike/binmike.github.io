@@ -124,6 +124,7 @@ conky.text = [[ \${time %l}.\${time %M}\${time %P} \${execi 20 /home/mike/script
 EOF
 
 mkdir /home/mike/images
+mkdir /home/mike/images/screenshots/
 curl http://mike.dog/tiedye.jpg -o /home/mike/images/tiedye.jpg
 
 mkdir /home/mike/suckless
